@@ -12,7 +12,7 @@
 			var N = 151;
 
 			function imgUrl(num){
-				return 'http://pokeapi.co/media/img/'+num+'.png';
+				return 'https://pokeapi.co/media/img/'+num+'.png';
 			}
 			
 			for(var i=1; i<= N; i++){
@@ -29,7 +29,7 @@
 			function displayFromApi(num){
 				$('aside h2').text('loading..');
 
-				$.get('http://pokeapi.co/api/v1/pokemon/'+num+'/',
+				$.get('https://pokeapi.co/api/v1/pokemon/'+num+'/',
 						function(res){
 							$('img[num='+num+']').data({
 								'name': res.name,
