@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pokemon</title>
+	<link rel="stylesheet" href="style.css">
+	<script type="text/javascript" 
+			src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+	</script> 
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			var N = 151;
+
+			function imgUrl(num){
+				return 'http://pokeapi.co/media/img/'+num+'.png';
+			}
+			
+			for(var i=1; i<= N; i++){
+
+				link = imgUrl(i);
+				$('main').append('<div class="img-div"><img num='+i+' src="'+link+'"></div>');
+			}
+
+			$('img').hover(
+				function(){$(this).fadeTo(200,.5)},
+				function(){$(this).fadeTo(100, 1)}
+			);
+
+			function displayFromApi(num){
+				$('aside h2').text('loading..');
+
+				$.get('http://pokeapi.co/api/v1/pokemon/'+num+'/',
+						function(res){
+							$('img[num='+num+']').data({
+								'name': res.name,
+								'img': imgUrl(num),
+								'types': res.types,
+								'height': res.height,
+								'weight': res.weight
+							})
+							
+							/*note: i think the displayData needs to be called
+							from within the .get callback function. otherwise
+							the code seems to move on before the response is 
+							retrieved. having displayData in the callback 
+							function ensures the data() variable is populated
+							before moving on*/
+							displayData(num);
+						}, 
+						'json')
+			}
+
+			function displayData(num){
+				data = $('img[num='+num+']').data();
+				$('#name').text(data.name);
+				$('#height').text(data.height);
+				$('#weight').text(data.weight);
+				$('aside img').attr('src', data.img);
+
+				$('#types').children().remove();
+				types = data.types;
+				for(i=0; i<types.length; i++){
+					$('#types').append('<li>'+types[i].name+'</li>');
+				}
+
+				$('aside').children().css('display', 'block');
+			}
+
+			$('main img').click(function(){
+				$('aside').children().not('h2').css('display', 'none');
+				num = $(this).attr('num');
+				console.log(num);
+				if($.isEmptyObject($(this).data())){
+					/* havent clicked here before. hit the api
+					and store the results to the image element*/
+
+					//console.log('querying api');
+					displayFromApi(num);
+				}else{
+					/* already loaded. user should notice
+					that icons they already clicked are faster to load*/
+
+					//console.log('retrieving saved data');
+					displayData(num);
+				}
+				
+				
+			})
+
+
+		});
+
+	</script>
+</head>
+<body>
+
+	<main>
+	</main>
+
+	<aside>
+		<h2 id="name">Click an image to learn more</h2>
+		
+		<img>
+		
+		<h3>Types</h3>
+		<ul id="types">
+		</ul>
+
+		<h3>Height</h3>
+		<p id="height"></p>
+		
+		<h3>Weight</h3>
+		<p id="weight"></p>
+
+	</aside>
+
+</body>
+</html>

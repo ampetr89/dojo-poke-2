@@ -1,0 +1,48 @@
+*{
+	padding: 0;
+	margin: 0;
+	font-family: sans-serif;
+}
+
+body{
+	padding-top: 20px;
+}
+
+main{
+	width: 70%;
+	margin: 0 auto;
+	text-align: center;
+}
+main, aside{
+	display: inline-block;
+	vertical-align: top;
+}
+
+aside{
+	padding: 10px;
+	position: fixed;
+	left: 75%;
+	width: 20%;
+	height: 60%;
+	outline: orange 1px solid;
+}
+.img-div, img{
+	width: 80px;
+	display: inline-block;
+}
+
+h3, ul, p{
+	display: none;
+}
+
+ul li{
+	margin-left: 20px;
+}
+
+h3{
+	margin-top: 30px;
+}
+
+aside img{
+	margin-left: 10%;
+}
